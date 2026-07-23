@@ -1,15 +1,32 @@
 import React from "react";
 
 const HomePage = () => {
+  const [balance, setBalance] = React.useState(0);
+  const [todayIncome, setTodayIncome] = React.useState(0);
+  const [monthlyIcome, setMonthlyIcome] = React.useState(0);
+  const [todayExpense, setTodayExpense] = React.useState(0);
+  const [monthlyExpense, setMonthlyExpense] = React.useState(0);
+
+  const [inputTodayIncome, setInputTodayIncome] = React.useState(0);
+  const [xInputTodayIncome, setXInputTodayIncome] = React.useState(0);
+
+  const [inputTodayExpense, setInputTodayExpense] = React.useState(0);
+  const [xInputTodayExpense, setXInputTodayExpense] = React.useState(0);
+
+  const [inputDate, setInputDate] = React.useState("");
+  const [xInputDate, setXInputDate] = React.useState("");
+
+  const [inputMonth, setInputMonth] = React.useState("");
+  const [xInputMonth, setXInputMonth] = React.useState("");
+
   return (
     <div className=" bg-violet-100 h-screen flex flex-col">
       <div className="flex flex-row flex-1">
         <div className="flex flex-1 items-center justify-center">
           <div className="  bg-gray-100 h-40 w-100 border-gray-600 border-3 rounded-xl flex flex-col items-center justify-center">
-            <div className="w-78 ">
-              <p className="text-2xl">Current Balace</p>
-            </div>
-            <p className=" text-5xl">000,000,000.00</p>
+            <p className="text-2xl">Current Balance</p>
+
+            <p className=" text-5xl">{balance}</p>
           </div>
         </div>
         <div className="flex-1/5 grid grid-cols-2 grid-rows-2 place-items-center ">
@@ -17,45 +34,119 @@ const HomePage = () => {
             <div>
               <p className="text-xl">Monthly income</p>
             </div>
-            <p className=" text-3xl">000,000,000.00</p>
+            <p className=" text-3xl">{monthlyIcome}</p>
           </div>
           <div className="  bg-red-100 h-25 w-80 ml-2 border-red-600 border-3 rounded-xl flex flex-col items-center justify-center">
             <div>
-              <p className="text-xl">Monthly income</p>
+              <p className="text-xl">Monthly Expense</p>
             </div>
-            <p className=" text-3xl">000,000,000.00</p>
-          </div><div className="  bg-green-100 h-25 w-80 ml-2 border-green-600 border-3 rounded-xl flex flex-col items-center justify-center">
+            <p className=" text-3xl">{monthlyExpense}</p>
+          </div>
+          <div className="  bg-green-100 h-25 w-80 ml-2 border-green-600 border-3 rounded-xl flex flex-col items-center justify-center">
             <div>
-              <p className="text-xl">Monthly income</p>
+              <p className="text-xl">Today income</p>
             </div>
-            <p className=" text-3xl">000,000,000.00</p>
-          </div><div className="  bg-red-100 h-25 w-80 ml-2 border-red-600 border-3 rounded-xl flex flex-col items-center justify-center">
+            <p className=" text-3xl">{todayIncome}</p>
+          </div>
+          <div className="  bg-red-100 h-25 w-80 ml-2 border-red-600 border-3 rounded-xl flex flex-col items-center justify-center">
             <div>
-              <p className="text-xl">Monthly income</p>
+              <p className="text-xl">Today expense</p>
             </div>
-            <p className=" text-3xl">000,000,000.00</p>
-          </div></div>
+            <p className=" text-3xl">{todayExpense}</p>
+          </div>
+        </div>
       </div>
       <div className="flex-2 w-screen grid grid-cols-2 grid-row-3 place-items-center">
         <div className="   h-25 w-120   bg-white border-gray-600 border-3 rounded-xl flex items-center justify-around">
           <p>Todays Income :</p>
-          <input className="h-13 w-70 border-gray-600 border-2 rounded-sm pl-10"></input>
+          <input
+            className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
+            type="text"
+            onChange={(event) =>
+              setInputTodayIncome(Number(event.target.value))
+            }
+          ></input>
+          <button
+            className="border h-10 w-20"
+            onClick={() => {
+              setXInputTodayIncome(Number(inputTodayIncome));
+              console.log({ xInputTodayIncome });
+            }}
+          >
+            send
+          </button>
         </div>
         <div className="   h-25 w-120   bg-white border-gray-600 border-3 rounded-xl flex items-center justify-around">
           <p> Enter Date :</p>
-          <input className="h-13 w-70 border-gray-600 border-2 rounded-sm pl-10"></input>
+          <input
+            className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
+            type="date"
+            onChange={(event) => setInputDate(event.target.value)}
+          ></input>
+          <button
+            className="border h-10 w-20"
+            onClick={() => {
+              setXInputDate(inputDate);
+              console.log({ xInputDate });
+            }}
+          >
+            send
+          </button>
         </div>
         <div className="   h-25 w-120   bg-white border-gray-600 border-3 rounded-xl flex items-center justify-around">
           <p>Todays Expense :</p>
-          <input className="h-13 w-70 border-gray-600 border-2 rounded-sm pl-10"></input>
+          <input
+            className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
+            type="text"
+            onChange={(event) =>
+              setInputTodayExpense(Number(event.target.value))
+            }
+          ></input>
+          <button
+            className="border h-10 w-20"
+            onClick={() => {
+              setXInputTodayExpense(Number(inputTodayExpense));
+              console.log({ xInputTodayExpense });
+            }}
+          >
+            send
+          </button>
         </div>
         <div className="   h-25 w-120   bg-white border-gray-600 border-3 rounded-xl flex items-center justify-around">
           <p>Enter Month :</p>
-          <input className="h-13 w-70 border-gray-600 border-2 rounded-sm pl-10"></input>
+          <input
+            className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
+            type="month"
+            onChange={(event) => setInputMonth(event.target.value)}
+          ></input>
+          <button
+            className="border h-10 w-20"
+            onClick={() => {
+              setXInputMonth(inputMonth);
+              console.log({ xInputMonth });
+            }}
+          >
+            send
+          </button>
         </div>
         <div className="   h-25 w-120   bg-white border-gray-600 border-3 rounded-xl flex items-center justify-around">
           <p>Other :</p>
-          <input className="h-13 w-70 border-gray-600 border-2 rounded-sm pl-10"></input>
+          <input
+            className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
+            type="text"
+            onChange={(event) =>
+              setInputTodayIncome(Number(event.target.value))
+            }
+          ></input>
+          <button
+            className="border h-10 w-20"
+            onClick={() => {
+              setXInputTodayIncome(Number(inputTodayIncome));
+              console.log({ xInputTodayIncome });
+            }}
+          >
+            send
+          </button>
         </div>{" "}
       </div>
     </div>
