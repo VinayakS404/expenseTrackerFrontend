@@ -1,23 +1,39 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const HomePage = () => {
-  const [balance, setBalance] = React.useState(0);
-  const [todayIncome, setTodayIncome] = React.useState(0);
-  const [monthlyIcome, setMonthlyIcome] = React.useState(0);
-  const [todayExpense, setTodayExpense] = React.useState(0);
-  const [monthlyExpense, setMonthlyExpense] = React.useState(0);
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/get/everyData")
+      .then((response) => {
+        setTodayIncome(response.data.todayIncome);
+        setTodayExpense(response.data.todayExpense);
+        setMonthlyIcome(response.data.monthlyIncome);
+        setMonthlyExpense(response.data.MonthlyExpense);
+        setBalance(response.data.balance);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-  const [inputTodayIncome, setInputTodayIncome] = React.useState(0);
-  const [xInputTodayIncome, setXInputTodayIncome] = React.useState(0);
+  const [balance, setBalance] = useState(0);
+  const [todayIncome, setTodayIncome] = useState(0);
+  const [monthlyIcome, setMonthlyIcome] = useState(0);
+  const [todayExpense, setTodayExpense] = useState(0);
+  const [monthlyExpense, setMonthlyExpense] = useState(0);
 
-  const [inputTodayExpense, setInputTodayExpense] = React.useState(0);
-  const [xInputTodayExpense, setXInputTodayExpense] = React.useState(0);
+  const [inputTodayIncome, setInputTodayIncome] = useState(0);
+  const [xInputTodayIncome, setXInputTodayIncome] = useState(0);
 
-  const [inputDate, setInputDate] = React.useState("");
-  const [xInputDate, setXInputDate] = React.useState("");
+  const [inputTodayExpense, setInputTodayExpense] = useState(0);
+  const [xInputTodayExpense, setXInputTodayExpense] = useState(0);
 
-  const [inputMonth, setInputMonth] = React.useState("");
-  const [xInputMonth, setXInputMonth] = React.useState("");
+  const [inputDate, setInputDate] = useState("");
+  const [xInputDate, setXInputDate] = useState("");
+
+  const [inputMonth, setInputMonth] = useState("");
+  const [xInputMonth, setXInputMonth] = useState("");
 
   return (
     <div className=" bg-violet-100 h-screen flex flex-col">
