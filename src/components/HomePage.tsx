@@ -3,19 +3,58 @@ import { useEffect, useState } from "react";
 
 const HomePage = () => {
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/get/everyData")
-      .then((response) => {
-        setTodayIncome(response.data.todayIncome);
-        setTodayExpense(response.data.todayExpense);
-        setMonthlyIcome(response.data.monthlyIncome);
-        setMonthlyExpense(response.data.MonthlyExpense);
-        setBalance(response.data.balance);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    loadData();
   }, []);
+
+  async function loadData() {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/get/everyData",
+      );
+
+      setTodayIncome(response.data.todayIncome);
+      setTodayExpense(response.data.todayExpense);
+      setMonthlyIcome(response.data.monthlyIncome);
+      setMonthlyExpense(response.data.monthlyExpense);
+      setBalance(response.data.balance);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function addTransaction(mode: number) {
+    let type: string;
+    let amount: number;
+
+    switch (mode) {
+      case 1:
+        type = "INCOME";
+        amount = inputTodayIncome;
+        break;
+
+      case 2:
+        type = "EXPENSE";
+        amount = inputTodayExpense;
+        break;
+
+      default:
+        console.log("hit default");
+    }
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/add/current",
+        {
+          transactionType: type,
+          amount: amount,
+        },
+      );
+
+      await loadData();
+
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const [balance, setBalance] = useState(0);
   const [todayIncome, setTodayIncome] = useState(0);
@@ -24,10 +63,8 @@ const HomePage = () => {
   const [monthlyExpense, setMonthlyExpense] = useState(0);
 
   const [inputTodayIncome, setInputTodayIncome] = useState(0);
-  const [xInputTodayIncome, setXInputTodayIncome] = useState(0);
 
   const [inputTodayExpense, setInputTodayExpense] = useState(0);
-  const [xInputTodayExpense, setXInputTodayExpense] = useState(0);
 
   const [inputDate, setInputDate] = useState("");
   const [xInputDate, setXInputDate] = useState("");
@@ -77,7 +114,12 @@ const HomePage = () => {
           <p>Todays Income :</p>
           <input
             className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
-            type="text"
+            type="number"
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-", "."].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
             onChange={(event) =>
               setInputTodayIncome(Number(event.target.value))
             }
@@ -85,8 +127,8 @@ const HomePage = () => {
           <button
             className="border h-10 w-20"
             onClick={() => {
-              setXInputTodayIncome(Number(inputTodayIncome));
-              console.log({ xInputTodayIncome });
+              console.log({ inputTodayIncome });
+              addTransaction(1);
             }}
           >
             send
@@ -113,7 +155,12 @@ const HomePage = () => {
           <p>Todays Expense :</p>
           <input
             className="h-13 w-50 0 border-gray-600 border-2 rounded-sm pl-10"
-            type="text"
+            type="number"
+            onKeyDown={(e) => {
+              if (["e", "E", "+", "-", "."].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
             onChange={(event) =>
               setInputTodayExpense(Number(event.target.value))
             }
@@ -121,8 +168,8 @@ const HomePage = () => {
           <button
             className="border h-10 w-20"
             onClick={() => {
-              setXInputTodayExpense(Number(inputTodayExpense));
-              console.log({ xInputTodayExpense });
+              console.log({ inputTodayExpense });
+              addTransaction(2);
             }}
           >
             send
