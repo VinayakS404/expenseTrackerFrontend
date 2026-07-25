@@ -2,6 +2,23 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const HomePage = () => {
+  const [balance, setBalance] = useState(0);
+  const [todayIncome, setTodayIncome] = useState(0);
+  const [monthlyIcome, setMonthlyIcome] = useState(0);
+  const [todayExpense, setTodayExpense] = useState(0);
+  const [monthlyExpense, setMonthlyExpense] = useState(0);
+
+  const [inputTodayIncome, setInputTodayIncome] = useState(0);
+
+  const [inputTodayExpense, setInputTodayExpense] = useState(0);
+
+  const [inputDate, setInputDate] = useState("");
+  const [xInputDate, setXInputDate] = useState("");
+
+  const [inputMonth, setInputMonth] = useState("");
+  const [responseMonthIncome, setResponseMonthIncome] = useState("");
+  const [responseMonthExpense, setResponseMonthExpense] = useState("");
+
   useEffect(() => {
     loadData();
   }, []);
@@ -21,6 +38,29 @@ const HomePage = () => {
       console.error(error);
     }
   }
+
+  async function getMonth(inputMonth: any) {
+    const [year, month] = inputMonth.split("-");
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/get/monthly/both",
+        {
+          params: {
+            year: year,
+            month: month,
+          },
+        },
+      );
+      alert(
+        `income = ${response.data.income}\nexpense = ${response.data.expense}`,
+      );
+      setResponseMonthIncome(response.data.income);
+      setResponseMonthExpense(response.data.expense);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async function addTransaction(mode: number) {
     let type: string;
     let amount: number;
@@ -55,22 +95,6 @@ const HomePage = () => {
       console.error(error);
     }
   }
-
-  const [balance, setBalance] = useState(0);
-  const [todayIncome, setTodayIncome] = useState(0);
-  const [monthlyIcome, setMonthlyIcome] = useState(0);
-  const [todayExpense, setTodayExpense] = useState(0);
-  const [monthlyExpense, setMonthlyExpense] = useState(0);
-
-  const [inputTodayIncome, setInputTodayIncome] = useState(0);
-
-  const [inputTodayExpense, setInputTodayExpense] = useState(0);
-
-  const [inputDate, setInputDate] = useState("");
-  const [xInputDate, setXInputDate] = useState("");
-
-  const [inputMonth, setInputMonth] = useState("");
-  const [xInputMonth, setXInputMonth] = useState("");
 
   return (
     <div className=" bg-violet-100 h-screen flex flex-col">
@@ -185,8 +209,7 @@ const HomePage = () => {
           <button
             className="border h-10 w-20"
             onClick={() => {
-              setXInputMonth(inputMonth);
-              console.log({ xInputMonth });
+              getMonth(inputMonth);
             }}
           >
             send
@@ -201,13 +224,7 @@ const HomePage = () => {
               setInputTodayIncome(Number(event.target.value))
             }
           ></input>
-          <button
-            className="border h-10 w-20"
-            onClick={() => {
-              setXInputTodayIncome(Number(inputTodayIncome));
-              console.log({ xInputTodayIncome });
-            }}
-          >
+          <button className="border h-10 w-20" onClick={() => {}}>
             send
           </button>
         </div>{" "}
