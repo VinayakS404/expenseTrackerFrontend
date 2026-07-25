@@ -12,12 +12,15 @@ const HomePage = () => {
 
   const [inputTodayExpense, setInputTodayExpense] = useState(0);
 
-  const [inputDate, setInputDate] = useState("");
-  const [xInputDate, setXInputDate] = useState("");
-
   const [inputMonth, setInputMonth] = useState("");
   const [responseMonthIncome, setResponseMonthIncome] = useState("");
   const [responseMonthExpense, setResponseMonthExpense] = useState("");
+
+  const [inputDate, setInputDate] = useState("");
+  const [responseSpecificDayIncome, setResponseSpecificDayIncome] =
+    useState("");
+  const [responseSpecificDayExpense, setResponseSpecificDayExpense] =
+    useState("");
 
   useEffect(() => {
     loadData();
@@ -61,9 +64,31 @@ const HomePage = () => {
     }
   }
 
+  async function getSpecificDay(inputDate: any) {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/get/request/b",
+        {
+          params: {
+            date: inputDate,
+          },
+        },
+      );
+      alert(
+        `income = ${response.data.income}\nexpense = ${response.data.expense}`,
+      );
+      setResponseSpecificDayIncome(response.data.income);
+      setResponseSpecificDayExpense(response.data.expense);
+    } catch (error) {
+      console.log("help")
+      console.log(inputDate)
+      console.error(error);
+    }
+  }
+
   async function addTransaction(mode: number) {
-    let type: string;
-    let amount: number;
+    let type: string = "";
+    let amount: number = 0;
 
     switch (mode) {
       case 1:
@@ -168,8 +193,8 @@ const HomePage = () => {
           <button
             className="border h-10 w-20"
             onClick={() => {
-              setXInputDate(inputDate);
-              console.log({ xInputDate });
+              console.log({ inputDate });
+              getSpecificDay(inputDate);
             }}
           >
             send
